@@ -70,6 +70,11 @@ target_link_libraries(performance_test
         ${PROJECT_NAME}
 )
 
+# iOS测试App
+if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    add_subdirectory(ios-app)
+endif()
+
 # 设置输出目录
 set_target_properties(
     basic_example

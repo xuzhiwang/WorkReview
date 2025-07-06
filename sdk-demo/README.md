@@ -41,14 +41,51 @@
 - **spdlog** (自动下载)
 - **Google Test** (自动下载，仅测试时)
 
-### 构建步骤
+### 🎯 一键构建
 
-#### Linux/macOS
+#### 最简单的方式
 ```bash
-# 克隆项目
-git clone <repository-url>
-cd sdk-demo
+# macOS/Linux
+./quick_build.sh
 
+# Windows
+quick_build.bat
+```
+
+### 🛠️ 平台特定构建
+
+#### macOS - 生成Xcode项目
+```bash
+# 基础macOS项目
+./build_xcode.sh
+
+# 生成并构建Release版本
+./build_xcode.sh -c Release -b
+
+# 生成iOS项目并打开Xcode
+./build_xcode.sh -p ios -o
+
+# 生成所有平台项目
+./build_xcode.sh -p all -t -e -o
+```
+
+#### Windows - 生成Visual Studio项目
+```cmd
+# 基础VS项目
+build_vs.bat
+
+# 生成并构建Release版本
+build_vs.bat -c Release -b
+
+# 生成x86项目并打开VS
+build_vs.bat -p x86 -o
+
+# 包含测试和示例
+build_vs.bat -t -e -b
+```
+
+#### Linux/通用构建
+```bash
 # 创建构建目录
 mkdir build && cd build
 
@@ -62,56 +99,7 @@ make -j$(nproc)
 ctest --output-on-failure
 
 # 运行示例
-./examples/basic_example
-```
-
-#### Windows
-```cmd
-# 使用Visual Studio Developer Command Prompt
-git clone <repository-url>
-cd sdk-demo
-
-# 创建构建目录
-mkdir build && cd build
-
-# 配置项目
-cmake .. -G "Visual Studio 16 2019" -A x64
-
-# 编译
-cmake --build . --config Release
-
-# 运行测试
-ctest -C Release --output-on-failure
-
-# 运行示例
-.\examples\Release\basic_example.exe
-```
-
-#### Android
-```bash
-# 设置Android NDK环境变量
-export ANDROID_NDK_ROOT=/path/to/android-ndk
-
-# 配置Android构建
-cmake .. \
-  -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
-  -DANDROID_ABI=arm64-v8a \
-  -DANDROID_PLATFORM=android-21
-
-# 编译
-make -j$(nproc)
-```
-
-#### iOS
-```bash
-# 配置iOS构建
-cmake .. \
-  -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
-  -DPLATFORM=OS64 \
-  -DCMAKE_BUILD_TYPE=Release
-
-# 编译
-make -j$(nproc)
+./examples/c_api_example
 ```
 
 ## 📁 项目结构
@@ -282,6 +270,25 @@ logger->info("User {} logged in with ID {}", username, user_id);
 // 条件日志
 logger->log_if(debug_mode, sdk::LogLevel::DEBUG, "Debug information");
 ```
+
+## 📱 iOS测试App
+
+项目包含一个完整的iOS测试应用，展示SDK在移动平台上的使用：
+
+```bash
+# 生成iOS模拟器项目
+./build_xcode.sh -p ios -d simulator -o
+
+# 生成iOS设备项目
+./build_xcode.sh -p ios -d device -o
+```
+
+iOS App功能：
+- SDK初始化和配置
+- 线程池任务提交和监控
+- HTTP客户端网络请求
+- 日志系统测试
+- 实时日志显示界面
 
 ## 🧪 测试
 

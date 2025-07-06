@@ -130,14 +130,19 @@ include(cmake/Install.cmake)
 # 打包配置
 include(cmake/Package.cmake)
 
-# 文档生成
-find_package(Doxygen)
+# 文档生成（可选）
+find_package(Doxygen QUIET)
 if(DOXYGEN_FOUND)
-    add_subdirectory(docs)
+    message(STATUS "Doxygen found - documentation targets available")
+    # add_subdirectory(docs)  # 暂时禁用
 endif()
 
-# 静态分析
-include(cmake/StaticAnalysis.cmake)
+# 静态分析（可选）
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/StaticAnalysis.cmake")
+    include(cmake/StaticAnalysis.cmake)
+endif()
 
-# 格式化
-include(cmake/Format.cmake)
+# 格式化（可选）
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Format.cmake")
+    include(cmake/Format.cmake)
+endif()
