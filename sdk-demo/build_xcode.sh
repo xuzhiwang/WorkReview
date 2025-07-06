@@ -192,8 +192,15 @@ generate_macos_project() {
         -DCMAKE_FIND_FRAMEWORK=LAST
     
     if [[ $? -eq 0 ]]; then
-        print_success "macOS项目生成成功: $BUILD_DIR/CrossPlatformSDK.xcodeproj"
-        print_info "所有CMake配置错误已修复"
+        # 查找生成的.xcodeproj文件
+        XCODE_PROJECT=$(find . -name "*.xcodeproj" -type d | head -n 1)
+        if [[ -n "$XCODE_PROJECT" ]]; then
+            print_success "macOS项目生成成功: $BUILD_DIR/$XCODE_PROJECT"
+            print_info "所有CMake配置错误已修复"
+        else
+            print_error "未找到生成的Xcode项目文件"
+            exit 1
+        fi
     else
         print_error "macOS项目生成失败"
         print_error "请检查CMake输出中的错误信息"
@@ -250,7 +257,14 @@ EOF
         -DENABLE_BITCODE=OFF
     
     if [[ $? -eq 0 ]]; then
-        print_success "iOS项目生成成功: $BUILD_DIR/CrossPlatformSDK.xcodeproj"
+        # 查找生成的.xcodeproj文件
+        XCODE_PROJECT=$(find . -name "*.xcodeproj" -type d | head -n 1)
+        if [[ -n "$XCODE_PROJECT" ]]; then
+            print_success "iOS项目生成成功: $BUILD_DIR/$XCODE_PROJECT"
+        else
+            print_error "未找到生成的iOS Xcode项目文件"
+            exit 1
+        fi
     else
         print_error "iOS项目生成失败"
         exit 1
@@ -263,12 +277,21 @@ EOF
 build_project() {
     local build_dir=$1
     local platform_name=$2
-    
+
     print_info "构建$platform_name项目..."
-    
+
     cd "$build_dir"
-    
-    xcodebuild -project CrossPlatformSDK.xcodeproj \
+
+    # 查找.xcodeproj文件
+    local xcode_project=$(find . -name "*.xcodeproj" -type d | head -n 1)
+    if [[ -z "$xcode_project" ]]; then
+        print_error "未找到Xcode项目文件"
+        exit 1
+    fi
+
+    print_info "使用项目文件: $xcode_project"
+
+    xcodebuild -project "$xcode_project" \
                -scheme ALL_BUILD \
                -configuration "$CONFIG" \
                build
@@ -303,9 +326,18 @@ run_example() {
 open_xcode_project() {
     local build_dir=$1
     local platform_name=$2
-    
+
     print_info "打开$platform_name Xcode项目..."
-    open "$build_dir/CrossPlatformSDK.xcodeproj"
+
+    cd "$build_dir"
+    local xcode_project=$(find . -name "*.xcodeproj" -type d | head -n 1)
+    if [[ -n "$xcode_project" ]]; then
+        print_info "打开项目: $xcode_project"
+        open "$xcode_project"
+    else
+        print_error "未找到Xcode项目文件"
+    fi
+    cd ..
 }
 
 # 主执行流程
