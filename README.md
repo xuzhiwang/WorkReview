@@ -27,6 +27,13 @@
 - [模板文件](docs/templates/) - 各种文档和流程模板
 - [检查清单](docs/checklists/) - 质量检查和评审清单
 
+### 🛠️ SDK Demo项目
+- [SDK Demo](sdk-demo/) - 现代C++跨平台SDK示例项目
+  - 支持平台：Windows, macOS, Linux, iOS, Android
+  - 核心功能：线程池、HTTP客户端、日志系统
+  - 构建系统：CMake + 现代C++17
+  - 第三方库：libcurl, spdlog, Google Test
+
 ## 快速开始
 
 ### 🚀 新用户入门
