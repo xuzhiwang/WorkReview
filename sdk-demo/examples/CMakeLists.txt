@@ -10,6 +10,16 @@ target_link_libraries(basic_example
         ${PROJECT_NAME}
 )
 
+# C API示例
+add_executable(c_api_example
+    c_api_example.c
+)
+
+target_link_libraries(c_api_example
+    PRIVATE
+        ${PROJECT_NAME}
+)
+
 # 线程池示例
 add_executable(thread_pool_example
     thread_pool_example.cpp
@@ -63,6 +73,7 @@ target_link_libraries(performance_test
 # 设置输出目录
 set_target_properties(
     basic_example
+    c_api_example
     thread_pool_example
     http_client_example
     logging_example
