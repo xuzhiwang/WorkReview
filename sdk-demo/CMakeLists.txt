@@ -81,12 +81,21 @@ target_link_libraries(${PROJECT_NAME}
         ${CURL_LIBRARIES}
 )
 
-# 条件链接spdlog
+# 使用spdlog作为头文件库，避免链接问题
 if(TARGET spdlog::spdlog)
-    target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+    get_target_property(SPDLOG_INCLUDE_DIRS spdlog::spdlog INTERFACE_INCLUDE_DIRECTORIES)
+    if(SPDLOG_INCLUDE_DIRS)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${SPDLOG_INCLUDE_DIRS})
+    endif()
 elseif(TARGET spdlog)
-    target_link_libraries(${PROJECT_NAME} PRIVATE spdlog)
+    get_target_property(SPDLOG_INCLUDE_DIRS spdlog INTERFACE_INCLUDE_DIRECTORIES)
+    if(SPDLOG_INCLUDE_DIRS)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${SPDLOG_INCLUDE_DIRS})
+    endif()
 endif()
+
+# 定义SPDLOG_HEADER_ONLY使用头文件版本
+target_compile_definitions(${PROJECT_NAME} PRIVATE SPDLOG_HEADER_ONLY)
 
 # 包含目录
 target_include_directories(${PROJECT_NAME}

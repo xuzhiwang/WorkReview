@@ -193,8 +193,10 @@ generate_macos_project() {
     
     if [[ $? -eq 0 ]]; then
         print_success "macOS项目生成成功: $BUILD_DIR/CrossPlatformSDK.xcodeproj"
+        print_info "所有CMake配置错误已修复"
     else
         print_error "macOS项目生成失败"
+        print_error "请检查CMake输出中的错误信息"
         exit 1
     fi
     

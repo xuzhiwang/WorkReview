@@ -56,11 +56,12 @@ install(FILES
     DESTINATION lib/cmake/${PROJECT_NAME}
 )
 
-# 安装目标文件
+# 安装目标文件（只导出我们自己的目标）
 install(EXPORT ${PROJECT_NAME}Targets
     FILE ${PROJECT_NAME}Targets.cmake
     NAMESPACE ${PROJECT_NAME}::
     DESTINATION lib/cmake/${PROJECT_NAME}
+    EXPORT_LINK_INTERFACE_LIBRARIES
 )
 
 # 安装示例程序（可选）

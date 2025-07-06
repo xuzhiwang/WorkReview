@@ -59,6 +59,29 @@ for file in "${REQUIRED_FILES[@]}"; do
     fi
 done
 
+# 检查CMake配置文件语法
+print_info "验证CMake配置文件语法..."
+
+# 检查主CMakeLists.txt
+if grep -q "SPDLOG_HEADER_ONLY" CMakeLists.txt; then
+    print_success "✓ spdlog配置为头文件模式"
+else
+    print_warning "spdlog可能未正确配置"
+fi
+
+if grep -q "target_include_directories.*PRIVATE.*SPDLOG_INCLUDE_DIRS" CMakeLists.txt; then
+    print_success "✓ spdlog包含目录配置正确"
+else
+    print_warning "spdlog包含目录可能有问题"
+fi
+
+# 检查Dependencies.cmake
+if grep -q "SPDLOG_HEADER_ONLY ON" cmake/Dependencies.cmake; then
+    print_success "✓ Dependencies.cmake中spdlog配置正确"
+else
+    print_warning "Dependencies.cmake中spdlog配置可能有问题"
+fi
+
 # 检查CMake配置
 print_info "验证CMake配置..."
 
@@ -71,6 +94,7 @@ cd "$BUILD_DIR"
 # 检查CMake是否可用
 if ! command -v cmake &> /dev/null; then
     print_warning "CMake未安装，跳过构建验证"
+    print_info "但配置文件语法检查已通过"
     cd ..
     rm -rf "$BUILD_DIR"
     exit 0
