@@ -137,12 +137,7 @@ if(DOXYGEN_FOUND)
     # add_subdirectory(docs)  # 暂时禁用
 endif()
 
-# 静态分析（可选）
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/StaticAnalysis.cmake")
-    include(cmake/StaticAnalysis.cmake)
-endif()
-
-# 格式化（可选）
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Format.cmake")
-    include(cmake/Format.cmake)
+# 代码质量检查（统一配置）
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CodeQuality.cmake")
+    include(cmake/CodeQuality.cmake)
 endif()

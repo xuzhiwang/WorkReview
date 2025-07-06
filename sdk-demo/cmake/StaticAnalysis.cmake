@@ -32,15 +32,17 @@ if(CLANG_TIDY_EXE)
     )
     
     # 创建clang-tidy目标
-    add_custom_target(clang-tidy
-        COMMAND ${CLANG_TIDY_EXE}
-        -checks=${CLANG_TIDY_CHECKS_STR}
-        -header-filter=.*
-        -p ${CMAKE_BINARY_DIR}
-        ${CMAKE_SOURCE_DIR}/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/src/*/*.cpp
-        COMMENT "Running clang-tidy"
-    )
+    if(NOT TARGET clang-tidy)
+        add_custom_target(clang-tidy
+            COMMAND ${CLANG_TIDY_EXE}
+            -checks=${CLANG_TIDY_CHECKS_STR}
+            -header-filter=.*
+            -p ${CMAKE_BINARY_DIR}
+            ${CMAKE_SOURCE_DIR}/src/*.cpp
+            ${CMAKE_SOURCE_DIR}/src/*/*.cpp
+            COMMENT "Running clang-tidy"
+        )
+    endif()
 else()
     message(WARNING "clang-tidy not found")
 endif()
@@ -60,12 +62,14 @@ if(CPPCHECK_EXE)
         --error-exitcode=1
     )
     
-    add_custom_target(cppcheck
-        COMMAND ${CPPCHECK_EXE}
-        ${CPPCHECK_ARGS}
-        ${CMAKE_SOURCE_DIR}/src/
-        COMMENT "Running cppcheck"
-    )
+    if(NOT TARGET cppcheck)
+        add_custom_target(cppcheck
+            COMMAND ${CPPCHECK_EXE}
+            ${CPPCHECK_ARGS}
+            ${CMAKE_SOURCE_DIR}/src/
+            COMMENT "Running cppcheck"
+        )
+    endif()
 else()
     message(WARNING "cppcheck not found")
 endif()
@@ -84,23 +88,27 @@ if(CLANG_FORMAT_EXE)
     )
     
     # 格式化目标
-    add_custom_target(format
-        COMMAND ${CLANG_FORMAT_EXE}
-        -i
-        -style=file
-        ${ALL_SOURCE_FILES}
-        COMMENT "Running clang-format"
-    )
-    
+    if(NOT TARGET format)
+        add_custom_target(format
+            COMMAND ${CLANG_FORMAT_EXE}
+            -i
+            -style=file
+            ${ALL_SOURCE_FILES}
+            COMMENT "Running clang-format"
+        )
+    endif()
+
     # 检查格式目标
-    add_custom_target(format-check
-        COMMAND ${CLANG_FORMAT_EXE}
-        --dry-run
-        --Werror
-        -style=file
-        ${ALL_SOURCE_FILES}
-        COMMENT "Checking code format"
-    )
+    if(NOT TARGET format-check)
+        add_custom_target(format-check
+            COMMAND ${CLANG_FORMAT_EXE}
+            --dry-run
+            --Werror
+            -style=file
+            ${ALL_SOURCE_FILES}
+            COMMENT "Checking code format"
+        )
+    endif()
 else()
     message(WARNING "clang-format not found")
 endif()
@@ -257,12 +265,14 @@ CheckOptions:
 endif()
 
 # 组合静态分析目标
-add_custom_target(static-analysis)
-if(CLANG_TIDY_EXE)
-    add_dependencies(static-analysis clang-tidy)
-endif()
-if(CPPCHECK_EXE)
-    add_dependencies(static-analysis cppcheck)
+if(NOT TARGET static-analysis)
+    add_custom_target(static-analysis)
+    if(CLANG_TIDY_EXE AND TARGET clang-tidy)
+        add_dependencies(static-analysis clang-tidy)
+    endif()
+    if(CPPCHECK_EXE AND TARGET cppcheck)
+        add_dependencies(static-analysis cppcheck)
+    endif()
 endif()
 
 message(STATUS "Static analysis tools configured")

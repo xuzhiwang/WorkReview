@@ -313,6 +313,21 @@ ctest -L performance
 ctest -L platform
 ```
 
+### 代码质量检查
+```bash
+# 运行所有代码质量检查
+make code-quality
+
+# 单独运行格式检查
+make format-check
+
+# 格式化代码
+make format
+
+# 静态分析
+make static-analysis
+```
+
 ### 内存检查
 ```bash
 # 使用AddressSanitizer
