@@ -240,7 +240,8 @@ cmake .. ^
     -DCMAKE_BUILD_TYPE=%CONFIG% ^
     -DBUILD_TESTS=%BUILD_TESTS% ^
     -DBUILD_EXAMPLES=%BUILD_EXAMPLES% ^
-    -DCMAKE_INSTALL_PREFIX=install
+    -DCMAKE_INSTALL_PREFIX=install ^
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 if errorlevel 1 (
     echo [ERROR] Visual Studio项目生成失败

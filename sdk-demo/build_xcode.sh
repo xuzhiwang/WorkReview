@@ -188,7 +188,8 @@ generate_macos_project() {
         -DBUILD_EXAMPLES="$BUILD_EXAMPLES" \
         -DCMAKE_OSX_DEPLOYMENT_TARGET="10.15" \
         -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DCMAKE_FIND_FRAMEWORK=LAST
     
     if [[ $? -eq 0 ]]; then
         print_success "macOS项目生成成功: $BUILD_DIR/CrossPlatformSDK.xcodeproj"

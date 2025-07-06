@@ -30,6 +30,8 @@ if(TARGET platform_abstraction)
     )
 endif()
 
+# 不导出第三方依赖库，只导出我们自己的目标
+
 # 创建并安装配置文件
 include(CMakePackageConfigHelpers)
 

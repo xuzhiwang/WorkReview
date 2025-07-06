@@ -48,8 +48,14 @@ FetchContent_Declare(
 set(SPDLOG_BUILD_EXAMPLE OFF CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_BENCH OFF CACHE BOOL "" FORCE)
+set(SPDLOG_INSTALL OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(spdlog)
+
+# 确保spdlog目标可用
+if(NOT TARGET spdlog::spdlog AND TARGET spdlog)
+    add_library(spdlog::spdlog ALIAS spdlog)
+endif()
 
 # Google Test - 测试框架 (仅在构建测试时)
 if(BUILD_TESTS)

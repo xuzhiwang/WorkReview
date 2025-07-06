@@ -79,8 +79,14 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         platform_abstraction
         ${CURL_LIBRARIES}
-        spdlog::spdlog
 )
+
+# 条件链接spdlog
+if(TARGET spdlog::spdlog)
+    target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+elseif(TARGET spdlog)
+    target_link_libraries(${PROJECT_NAME} PRIVATE spdlog)
+endif()
 
 # 包含目录
 target_include_directories(${PROJECT_NAME}

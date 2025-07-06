@@ -45,11 +45,18 @@
 
 #### 最简单的方式
 ```bash
-# macOS/Linux
-./quick_build.sh
+# 验证构建配置（推荐先运行）
+./verify_build.sh
 
-# Windows
-quick_build.bat
+# macOS - 生成Xcode项目并构建
+./build_xcode.sh
+
+# Windows - 生成VS项目并构建
+build_vs.bat
+
+# 通用构建（如果上述脚本不可用）
+./quick_build.sh    # macOS/Linux
+quick_build.bat     # Windows
 ```
 
 ### 🛠️ 平台特定构建
