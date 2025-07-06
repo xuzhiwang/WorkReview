@@ -175,12 +175,17 @@ clean_build_dirs() {
 # 生成macOS项目
 generate_macos_project() {
     print_info "生成macOS Xcode项目..."
-    
+
     BUILD_DIR="build-macos"
+    print_info "创建构建目录: $BUILD_DIR"
     mkdir -p "$BUILD_DIR"
-    
+
+    print_info "切换到构建目录: $(pwd)/$BUILD_DIR"
     cd "$BUILD_DIR"
-    
+
+    print_info "当前工作目录: $(pwd)"
+    print_info "运行CMake配置..."
+
     cmake .. \
         -G "Xcode" \
         -DCMAKE_BUILD_TYPE="$CONFIG" \
@@ -191,14 +196,41 @@ generate_macos_project() {
         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
         -DCMAKE_FIND_FRAMEWORK=LAST
     
-    if [[ $? -eq 0 ]]; then
+    CMAKE_EXIT_CODE=$?
+    print_info "CMake退出码: $CMAKE_EXIT_CODE"
+
+    if [[ $CMAKE_EXIT_CODE -eq 0 ]]; then
+        print_info "CMake配置成功，查找生成的文件..."
+        print_info "当前目录内容:"
+        ls -la
+
         # 查找生成的.xcodeproj文件
         XCODE_PROJECT=$(find . -name "*.xcodeproj" -type d | head -n 1)
+        print_info "查找到的Xcode项目: '$XCODE_PROJECT'"
+
         if [[ -n "$XCODE_PROJECT" ]]; then
             print_success "macOS项目生成成功: $BUILD_DIR/$XCODE_PROJECT"
             print_info "所有CMake配置错误已修复"
         else
             print_error "未找到生成的Xcode项目文件"
+            print_info "可能的原因: CMake没有使用Xcode生成器"
+            print_info "尝试查找其他生成的文件:"
+            find . -name "Makefile" -o -name "*.sln" -o -name "build.ninja" | head -5
+
+            # 检查是否生成了Makefile
+            if [[ -f "Makefile" ]]; then
+                print_warning "检测到Makefile，CMake可能使用了Unix Makefiles生成器"
+                print_info "尝试使用make构建..."
+                if make -j$(sysctl -n hw.ncpu); then
+                    print_success "使用make构建成功"
+                    print_info "可执行文件位置:"
+                    find . -name "*example*" -type f -executable | head -5
+                    return 0
+                else
+                    print_error "make构建失败"
+                fi
+            fi
+
             exit 1
         fi
     else

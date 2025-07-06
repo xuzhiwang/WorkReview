@@ -51,10 +51,13 @@
 # macOS - 生成Xcode项目并构建
 ./build_xcode.sh
 
+# 简化构建（如果上述脚本有问题）
+./build_simple.sh   # 自动尝试多种生成器
+
 # Windows - 生成VS项目并构建
 build_vs.bat
 
-# 通用构建（如果上述脚本不可用）
+# 通用构建（备选方案）
 ./quick_build.sh    # macOS/Linux
 quick_build.bat     # Windows
 ```
