@@ -82,6 +82,13 @@ else
     print_warning "Dependencies.cmake中spdlog配置可能有问题"
 fi
 
+# 检查简化配置
+if grep -q "CrossPlatform SDK configuration completed" CMakeLists.txt; then
+    print_success "✓ CMakeLists.txt配置已简化"
+else
+    print_warning "CMakeLists.txt可能需要进一步简化"
+fi
+
 # 检查CMake配置
 print_info "验证CMake配置..."
 

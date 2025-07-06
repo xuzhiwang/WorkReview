@@ -133,20 +133,24 @@ if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
-# 安装配置
-include(cmake/Install.cmake)
-
-# 打包配置
-include(cmake/Package.cmake)
-
-# 文档生成（可选）
-find_package(Doxygen QUIET)
-if(DOXYGEN_FOUND)
-    message(STATUS "Doxygen found - documentation targets available")
-    # add_subdirectory(docs)  # 暂时禁用
-endif()
-
-# 代码质量检查（统一配置）
+# 代码质量检查（可选）
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CodeQuality.cmake")
     include(cmake/CodeQuality.cmake)
+else()
+    message(STATUS "CodeQuality.cmake not found, skipping code quality configuration")
 endif()
+
+# 基本安装配置
+install(TARGETS ${PROJECT_NAME}
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+install(DIRECTORY include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h"
+)
+
+message(STATUS "CrossPlatform SDK configuration completed")

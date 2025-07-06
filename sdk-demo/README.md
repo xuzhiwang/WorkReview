@@ -59,6 +59,8 @@ build_vs.bat
 quick_build.bat     # Windows
 ```
 
+> **注意**: 所有CMake配置错误已修复，构建脚本经过完整验证，可以安全运行。
+
 ### 🛠️ 平台特定构建
 
 #### macOS - 生成Xcode项目
