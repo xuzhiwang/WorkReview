@@ -1,10 +1,7 @@
 # 平台抽象层
 
 add_library(platform_abstraction STATIC
-    platform_utils.cpp
     file_system.cpp
-    network_utils.cpp
-    system_info.cpp
 )
 
 # 平台特定源文件

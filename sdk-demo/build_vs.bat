@@ -7,14 +7,14 @@ REM 支持Windows平台多种架构
 REM 设置颜色输出（Windows 10+）
 for /f %%A in ('"prompt $H &echo on &for %%B in (1) do rem"') do set BS=%%A
 
-REM 默认参数
+REM 默认参数 - 一键构建配置
 set PLATFORM=x64
-set CONFIG=Debug
+set CONFIG=Release
 set VS_VERSION=2022
 set BUILD_TESTS=OFF
 set BUILD_EXAMPLES=ON
-set BUILD_PROJECT=false
-set OPEN_VS=false
+set BUILD_PROJECT=true
+set OPEN_VS=true
 set RUN_EXAMPLE=false
 set CLEAN_BUILD=false
 

@@ -54,13 +54,13 @@ show_help() {
     echo "  $0 --clean                  # 清理所有构建目录"
 }
 
-# 默认参数
+# 默认参数 - 一键构建配置
 PLATFORM="macos"
-CONFIG="Debug"
+CONFIG="Release"
 BUILD_TESTS="OFF"
 BUILD_EXAMPLES="ON"
-BUILD_PROJECT="false"
-OPEN_XCODE="false"
+BUILD_PROJECT="true"
+OPEN_XCODE="true"
 RUN_EXAMPLE="false"
 IOS_DEVICE="simulator"
 CLEAN_BUILD="false"

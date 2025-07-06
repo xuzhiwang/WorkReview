@@ -58,22 +58,16 @@ add_library(${PROJECT_NAME} STATIC
     # 线程池
     src/threading/thread_pool.cpp
     src/threading/task_queue.cpp
-    
+
     # HTTP客户端
     src/network/http_client.cpp
-    src/network/http_request.cpp
-    src/network/http_response.cpp
-    
+
     # 日志系统
     src/logging/logger.cpp
-    src/logging/log_formatter.cpp
-    src/logging/log_appender.cpp
-    
-    # 工具类
-    src/utils/string_utils.cpp
-    src/utils/time_utils.cpp
-    src/utils/file_utils.cpp
-    
+
+    # 平台工具
+    src/platform/platform_utils.cpp
+
     # 核心SDK
     src/sdk_core.cpp
 )
